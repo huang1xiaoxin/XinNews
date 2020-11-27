@@ -8,7 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-const val APP_KEY="a790c24d2f84373653aebb197319352f"
+//京东云新闻的APP_KEY
+const val APP_KEY=""
 const val BASE_URL= "https://way.jd.com/jisuapi/"
 
 interface RetrofitApi {
