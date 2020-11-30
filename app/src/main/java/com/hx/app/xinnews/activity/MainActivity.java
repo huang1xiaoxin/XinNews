@@ -1,9 +1,14 @@
-package com.hx.app.xinnews;
+package com.hx.app.xinnews.activity;
 
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -13,7 +18,10 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import com.google.android.material.tabs.TabLayout;
+import com.hx.app.xinnews.R;
 import com.hx.app.xinnews.adapter.FragmentAdapter;
+import com.hx.app.xinnews.base.BaseActivity;
+import com.hx.app.xinnews.constant.Constant;
 import com.hx.app.xinnews.databinding.ActivityMainBinding;
 import com.hx.app.xinnews.ui.LoadingDialog;
 import com.hx.app.xinnews.viewmodel.MainViewModel;
@@ -21,7 +29,7 @@ import com.hx.app.xinnews.viewmodel.MainViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private LoadingDialog mLoadingDialog;
 
@@ -34,14 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private List<String> list =new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected View initView(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         binding=ActivityMainBinding.inflate(getLayoutInflater());
-        initView();
-        initData();
-    }
-
-    private void initView() {
         setContentView(binding.getRoot());
         mainViewModel= new ViewModelProvider(this).get(MainViewModel.class);
         ViewPager viewPager=binding.viewPager;
@@ -52,25 +54,31 @@ public class MainActivity extends AppCompatActivity {
         //设置缓存的数量
         viewPager.setOffscreenPageLimit(4);
         tabLayoutSelectedText();
-        mLoadingDialog= new LoadingDialog.Builder(this).setCancelable(true).setMessage("" +
-                "正在加载...").setCancelOutside(true).setShowMessage(true).create();
         mainViewModel.getChannelLiveData().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> strings) {
+                dismissLoadingDialog();
+                //数据访问失败的时候，加载失败的提示
+                if (strings.get(0).equals(Constant.NET_ERROR)){
+                    binding.errorStud.inflate();
+                    return;
+                }
                 list.clear();
                 list.addAll(strings);
                 mAdapter.notifyDataSetChanged();
-                mLoadingDialog.dismiss();
+
+
             }
         });
-
+        return binding.getRoot();
     }
 
-    public void initData(){
-        mLoadingDialog.show();
+
+    @Override
+    protected void loadingData() {
+        showLoadingDialog();
         mainViewModel.getChannel();
     }
-
 
 
     /**
@@ -104,22 +112,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
-    /**
-     * 显示对话框
-     */
-    public void showLoadingDialog(){
-        if (mLoadingDialog!=null){
-            mLoadingDialog.show();
-        }
-    }
-
-    /**
-     * 隐藏对话框
-     */
-    public void dismissLoadingDialog(){
-        if (mLoadingDialog!=null){
-            mLoadingDialog.dismiss();
-        }
     }
 }

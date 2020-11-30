@@ -26,7 +26,6 @@ public abstract class BaseFragment<T extends ViewModel> extends Fragment {
     public T mViewModel;
 
     public final MultiTypeAdapter mAdapter = new MultiTypeAdapter();
-    ;
 
     /**
      * 设置给MutableAdapter设置的集合
@@ -82,7 +81,9 @@ public abstract class BaseFragment<T extends ViewModel> extends Fragment {
      *
      * @return
      */
-    protected abstract T initViewModel();
+    protected  T initViewModel(){
+        return  null;
+    }
 
 
     /**
@@ -123,7 +124,9 @@ public abstract class BaseFragment<T extends ViewModel> extends Fragment {
     /**
      * 用于注册LiveData的观测者
      */
-    protected abstract void registerLiveDataObserver();
+    protected void registerLiveDataObserver(){
+
+    }
 
 
 }

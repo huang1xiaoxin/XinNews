@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,22 +10,29 @@
         android:id="@+id/table_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:tabBackground="@android:color/white"
         app:tabIndicatorColor="@color/tabSelectedText"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="2dp"
         app:tabMode="scrollable"
         app:tabPadding="1dp"
-        app:tabIndicatorHeight="2dp"
-        app:tabIndicatorFullWidth="false"
-        app:tabTextAppearance="@style/TabLayoutUnTextSelected"
         app:tabRippleColor="@android:color/transparent"
-        tools:ignore="MissingConstraints" >
-    </com.google.android.material.tabs.TabLayout>
+        app:tabTextAppearance="@style/TabLayoutUnTextSelected"
+        tools:ignore="MissingConstraints" />
 
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/table_layout"
         tools:ignore="MissingConstraints" />
+    <ViewStub
+        android:id="@+id/error_stud"
+        android:layout="@layout/loading_error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

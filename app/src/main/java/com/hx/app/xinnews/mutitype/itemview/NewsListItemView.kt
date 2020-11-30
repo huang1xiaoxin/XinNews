@@ -10,11 +10,18 @@ import com.bumptech.glide.Glide
 import com.drakeet.multitype.ItemViewBinder
 import com.hx.app.xinnews.R
 import com.hx.app.xinnews.mutitype.itemdata.NewsListItemData
+import com.hx.app.xinnews.myinterface.OnRecycleViewItemClickListener
 import com.hx.app.xinnews.ui.CircleImageView
 import java.lang.ref.WeakReference
 
 class NewsListItemView constructor(context:Context) : ItemViewBinder<NewsListItemData,NewsListItemView.ViewHolder>(){
     val mWeakReference: WeakReference<Context> = WeakReference(context)
+
+    var mRecycleViewItemClickListener: OnRecycleViewItemClickListener? = null
+
+    constructor(context: Context,recycleViewItemClickListener: OnRecycleViewItemClickListener):this(context){
+        this.mRecycleViewItemClickListener=recycleViewItemClickListener
+    }
 
     override fun onBindViewHolder(holder: NewsListItemView.ViewHolder, item: NewsListItemData) {
         holder.src.text=item.sources
@@ -26,13 +33,21 @@ class NewsListItemView constructor(context:Context) : ItemViewBinder<NewsListIte
     }
 
     override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): NewsListItemView.ViewHolder {
-        val view:View= inflater.inflate(R.layout.news_items,parent,false);
+        val view:View= inflater.inflate(R.layout.news_items,parent,false)
+        val holder=ViewHolder(view)
+        view.setOnClickListener(holder)
         return ViewHolder(view)
     }
-    class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
+
+     inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView),View.OnClickListener {
         val title: TextView =itemView.findViewById(R.id.title_text)
         val time:TextView=itemView.findViewById(R.id.time_text)
         val src:TextView=itemView.findViewById(R.id.sources_text)
         val imageView:CircleImageView=itemView.findViewById(R.id.image_view)
+        override fun onClick(p0: View?) {
+            mRecycleViewItemClickListener?.onItemClick(p0,layoutPosition )
+        }
     }
+
+
 }
