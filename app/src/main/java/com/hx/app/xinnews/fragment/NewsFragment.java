@@ -62,5 +62,9 @@ public class NewsFragment extends BaseFragment<MainViewModel> {
         return new ViewModelProvider(this).get(MainViewModel.class);
     }
 
+    public void onClick() {
+
+    }
+
 
 }
