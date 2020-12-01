@@ -58,7 +58,7 @@ class MainViewModel : ViewModel() {
     fun getMoreNews(channel: String, start: Int, num: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val list: MutableList<NewsListItemData> = mutableListOf()
-            val data = model.getNews(channel, start, num)
+            val data = model.getNews(channel, num, start)
             data?.result?.list?.forEach {
                 list.add(NewsListItemData(it))
             }
