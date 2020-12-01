@@ -3,9 +3,12 @@ package com.hx.app.xinnews.activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -36,20 +39,26 @@ public class NewsContentActivity extends BaseActivity {
         mBing.getRoot().addView(mWebView,layoutParams);
         showLoadingDialog();
         WebSettings settings = mWebView.getSettings();
+        settings.setJavaScriptEnabled(true);//支持JS
         settings.setUseWideViewPort(true);//将图片调整到合适的webView的大小
         settings.setLoadWithOverviewMode(true);//缩放至屏幕的大小
         //缩放操作
         settings.setSupportZoom(true); //支持缩放，默认为true。是下面那个的前提。
         settings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
         settings.setDisplayZoomControls(false); //隐藏原生的缩放控件
+        //设置字体的大小
+        settings.setTextZoom(300);
         mWebView.setWebViewClient(new WebViewClient(){
             //数据加载完成
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                imgReset();
                 dismissLoadingDialog();
             }
         });
+
+
     }
 
 
@@ -73,5 +82,20 @@ public class NewsContentActivity extends BaseActivity {
             mWebView=null;
         }
         super.onDestroy();
+    }
+
+    /**
+     * 对图片进行重置大小，宽度就是手机屏幕宽度，高度根据宽度比便自动缩放
+     * ps:图片可能会存在压缩的问题
+     **/
+    private void imgReset() {
+         mWebView.loadUrl("javascript:(function(){" +
+                "var objs = document.getElementsByTagName('img'); " +
+                "for(var i=0;i<objs.length;i++)  " +
+                "{"
+                + "var img = objs[i];   " +
+                "    img.style.width = '100%'; img.style.height = 'auto';  " +
+                "}" +
+                "})()");
     }
 }
