@@ -42,9 +42,10 @@ public class NewsFragment extends BaseFragment<MainViewModel> {
         mAdapter.register(NewsListItemData.class,new NewsListItemView(context,new OnRecycleViewItemClickListener(){
 
             @Override
-            public void onItemClick(@Nullable View view, @NotNull String content) {
+            public void onItemClick(@Nullable View view, @NotNull NewsListItemData data) {
                 Intent intent=new Intent(context, NewsContentActivity.class);
-                intent.putExtra(Constant.CONTENT,content);
+                intent.putExtra(Constant.CONTENT,data.getContent());
+                intent.putExtra(Constant.TITLE,data.getTitle());
                 startActivity(intent);
             }
         }));

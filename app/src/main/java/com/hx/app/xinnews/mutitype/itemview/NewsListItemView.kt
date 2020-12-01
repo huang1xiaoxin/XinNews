@@ -30,7 +30,7 @@ class NewsListItemView constructor(context:Context) : ItemViewBinder<NewsListIte
                 .into(holder.imageView)}?:
                 holder.imageView.setImageResource(R.drawable.error)
         holder.itemView.setOnClickListener(View.OnClickListener {
-            mRecycleViewItemClickListener?.onItemClick(it, item.content)
+            mRecycleViewItemClickListener?.onItemClick(it, item)
         })
     }
 
