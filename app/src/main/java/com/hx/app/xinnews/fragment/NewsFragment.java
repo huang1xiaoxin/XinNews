@@ -14,7 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.hx.app.xinnews.activity.NewsContentActivity;
 import com.hx.app.xinnews.base.BaseFragment;
 import com.hx.app.xinnews.bean.Items;
-import com.hx.app.xinnews.constant.Constant;
+import com.hx.app.xinnews.constant.ConstantKt;
 import com.hx.app.xinnews.databinding.NewsListFagmentBinding;
 import com.hx.app.xinnews.mutitype.itemdata.NewsListItemData;
 import com.hx.app.xinnews.mutitype.itemview.NewsListItemView;
@@ -50,8 +50,8 @@ public class NewsFragment extends BaseFragment<MainViewModel> implements SwipeRe
             @Override
             public void onItemClick(@Nullable View view, @NotNull NewsListItemData data) {
                 Intent intent = new Intent(context, NewsContentActivity.class);
-                intent.putExtra(Constant.CONTENT, data.getContent());
-                intent.putExtra(Constant.TITLE, data.getTitle());
+                intent.putExtra(ConstantKt.CONTENT, data.getContent());
+                intent.putExtra(ConstantKt.TITLE, data.getTitle());
                 startActivity(intent);
             }
         }));
@@ -63,7 +63,7 @@ public class NewsFragment extends BaseFragment<MainViewModel> implements SwipeRe
         showLoadingDialog();
         Bundle bundle = getArguments();
         assert bundle != null;
-        mChannel = bundle.getString(Constant.TAB_TITLE, "头条");
+        mChannel = bundle.getString(ConstantKt.TAB_TITLE, "头条");
         mViewModel.getNewsTop20(mChannel);
     }
 

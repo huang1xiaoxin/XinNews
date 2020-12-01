@@ -28,7 +28,7 @@ class MainViewModel : ViewModel() {
     fun getChannel() {
         viewModelScope.launch(Dispatchers.IO) {
             val data = model.getChannel()
-            mChannels.postValue(data)
+            mChannels.postValue(data )
         }
     }
 
@@ -48,7 +48,7 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val list: MutableList<NewsListItemData> = mutableListOf()
             val data = model.getNewsTop20(channel)
-            data.result.list.forEach {
+            data?.result?.list?.forEach {
                 list.add(NewsListItemData(it))
             }
             mNewsListLiveData.postValue(list)
@@ -59,7 +59,7 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val list: MutableList<NewsListItemData> = mutableListOf()
             val data = model.getNews(channel, start, num)
-            data.result.list.forEach {
+            data?.result?.list?.forEach {
                 list.add(NewsListItemData(it))
             }
             mLoadingMoreNewsLiveData.postValue(list)

@@ -14,7 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.hx.app.xinnews.R;
 import com.hx.app.xinnews.adapter.FragmentAdapter;
 import com.hx.app.xinnews.base.BaseActivity;
-import com.hx.app.xinnews.constant.Constant;
+import com.hx.app.xinnews.constant.ConstantKt;
 import com.hx.app.xinnews.databinding.ActivityMainBinding;
 import com.hx.app.xinnews.viewmodel.MainViewModel;
 
@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity {
             public void onChanged(List<String> strings) {
                 dismissLoadingDialog();
                 //数据访问失败的时候，加载失败的提示
-                if (strings.get(0).equals(Constant.NET_ERROR)) {
+                if (strings.get(0).equals(ConstantKt.NET_ERROR)) {
                     binding.errorStud.inflate();
                     return;
                 }

@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.hx.app.xinnews.R;
 import com.hx.app.xinnews.base.BaseActivity;
-import com.hx.app.xinnews.constant.Constant;
+import com.hx.app.xinnews.constant.ConstantKt;
 import com.hx.app.xinnews.databinding.NewsContextLayoutBinding;
 
 public class NewsContentActivity extends BaseActivity {
@@ -54,8 +54,8 @@ public class NewsContentActivity extends BaseActivity {
 
     @Override
     protected void loadingData() {
-        String content = getIntent().getStringExtra(Constant.CONTENT);
-        String title = getIntent().getStringExtra(Constant.TITLE);
+        String content = getIntent().getStringExtra(ConstantKt.CONTENT);
+        String title = getIntent().getStringExtra(ConstantKt.TITLE);
         assert content != null;
         //加载数据
         mWebView.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);

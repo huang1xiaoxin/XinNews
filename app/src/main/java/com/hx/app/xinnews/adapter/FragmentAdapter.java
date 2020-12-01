@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.hx.app.xinnews.constant.Constant;
+import com.hx.app.xinnews.constant.ConstantKt;
 import com.hx.app.xinnews.fragment.NewsFragment;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         NewsFragment fragment = new NewsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(Constant.TAB_TITLE, strings.get(position));
+        bundle.putString(ConstantKt.TAB_TITLE, strings.get(position));
         fragment.setArguments(bundle);
         return fragment;
     }
