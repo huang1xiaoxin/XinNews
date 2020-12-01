@@ -26,9 +26,9 @@ class Model {
      */
     suspend fun getChannel(): List<String> {
         val result = RetrofitApi.create().getChannel(APP_KEY).result
-        return if (result==null){
+        return if (result == null) {
             listOf(Constant.NET_ERROR)
-        }else{
+        } else {
             result.result
         }
     }

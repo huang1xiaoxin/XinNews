@@ -1,7 +1,5 @@
 package com.hx.app.xinnews.bean;
 
-import java.util.List;
-
 public class ResultContent<T> {
 
     /**

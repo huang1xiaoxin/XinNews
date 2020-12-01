@@ -2,9 +2,9 @@ package com.hx.app.xinnews.base;
 
 import android.os.Bundle;
 
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.hx.app.xinnews.ui.LoadingDialog;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -13,14 +13,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLoadingDialog= new LoadingDialog.Builder(this).setCancelable(true).setMessage("" +
+        mLoadingDialog = new LoadingDialog.Builder(this).setCancelable(true).setMessage("" +
                 "正在加载...").setCancelOutside(true).setShowMessage(true).create();
         initView(savedInstanceState);
         loadingData();
     }
 
     /**
-     *  让子类去实现初始化一个View
+     * 让子类去实现初始化一个View
+     *
      * @param savedInstanceState
      * @return
      */
@@ -49,7 +50,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             mLoadingDialog.dismiss();
         }
     }
-
 
 
 }

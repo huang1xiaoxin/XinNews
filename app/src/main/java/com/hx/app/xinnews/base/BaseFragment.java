@@ -12,27 +12,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.drakeet.multitype.MultiTypeAdapter;
 import com.hx.app.xinnews.adapter.MyMultiTypeAdapter;
 import com.hx.app.xinnews.bean.Items;
 import com.hx.app.xinnews.ui.LoadingDialog;
 
-public abstract class BaseFragment<T extends ViewModel> extends Fragment implements MyMultiTypeAdapter.OnLoadMoreListener  {
-    private LoadingDialog mLoadingDialog;
-
-    public Context context;
-
-    private boolean isFist=true;
-
-    public T mViewModel;
-
-    public  MyMultiTypeAdapter mAdapter;
-
+public abstract class BaseFragment<T extends ViewModel> extends Fragment implements MyMultiTypeAdapter.OnLoadMoreListener {
     /**
      * 设置给MutableAdapter设置的集合
      */
     public final Items items = new Items();
-
+    public Context context;
+    public T mViewModel;
+    public MyMultiTypeAdapter mAdapter;
+    private LoadingDialog mLoadingDialog;
+    private boolean isFist = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,8 +33,8 @@ public abstract class BaseFragment<T extends ViewModel> extends Fragment impleme
         mLoadingDialog = new LoadingDialog.Builder(getActivity()).setCancelable(true).setMessage("" +
                 "正在加载...").setCancelOutside(true).setShowMessage(true).create();
         mViewModel = initViewModel();
-        context=getActivity();
-        mAdapter = new MyMultiTypeAdapter(this,context.getApplicationContext(),items);
+        context = getActivity();
+        mAdapter = new MyMultiTypeAdapter(this, context.getApplicationContext(), items);
     }
 
     @Nullable
@@ -56,9 +49,9 @@ public abstract class BaseFragment<T extends ViewModel> extends Fragment impleme
     @Override
     public void onResume() {
         super.onResume();
-        if (isFist){
+        if (isFist) {
             loadingData();
-            isFist=false;
+            isFist = false;
         }
 
     }
@@ -83,8 +76,8 @@ public abstract class BaseFragment<T extends ViewModel> extends Fragment impleme
      *
      * @return
      */
-    protected  T initViewModel(){
-        return  null;
+    protected T initViewModel() {
+        return null;
     }
 
 
@@ -126,7 +119,7 @@ public abstract class BaseFragment<T extends ViewModel> extends Fragment impleme
     /**
      * 用于注册LiveData的观测者
      */
-    protected void registerLiveDataObserver(){
+    protected void registerLiveDataObserver() {
 
     }
 

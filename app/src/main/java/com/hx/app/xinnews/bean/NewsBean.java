@@ -1,6 +1,6 @@
 package com.hx.app.xinnews.bean;
 
-public  class NewsBean {
+public class NewsBean {
     private String title;
     private String time;
     private String src;

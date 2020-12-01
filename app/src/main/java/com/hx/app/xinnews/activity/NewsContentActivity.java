@@ -15,18 +15,18 @@ import com.hx.app.xinnews.databinding.NewsContextLayoutBinding;
 
 public class NewsContentActivity extends BaseActivity {
     private NewsContextLayoutBinding mBing;
-    
+
     private WebView mWebView;
 
     @Override
     protected void initView(@Nullable Bundle savedInstanceState) {
-        mBing=NewsContextLayoutBinding.inflate(getLayoutInflater());
+        mBing = NewsContextLayoutBinding.inflate(getLayoutInflater());
         setContentView(mBing.getRoot());
-        ViewGroup.LayoutParams layoutParams=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         //使用ApplicationContext防止内存泄露
-        mWebView=new WebView(getApplicationContext());
-        mBing.linearLayout.addView(mWebView,layoutParams);
+        mWebView = new WebView(getApplicationContext());
+        mBing.linearLayout.addView(mWebView, layoutParams);
         showLoadingDialog();
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);//支持JS
@@ -37,8 +37,8 @@ public class NewsContentActivity extends BaseActivity {
         settings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
         settings.setDisplayZoomControls(false); //隐藏原生的缩放控件
         //设置字体的大小
-        settings.setTextZoom( getResources().getDimensionPixelOffset(R.dimen.content_title)*4);
-        mWebView.setWebViewClient(new WebViewClient(){
+        settings.setTextZoom(getResources().getDimensionPixelOffset(R.dimen.content_title) * 4);
+        mWebView.setWebViewClient(new WebViewClient() {
             //数据加载完成
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -54,23 +54,23 @@ public class NewsContentActivity extends BaseActivity {
 
     @Override
     protected void loadingData() {
-        String content=getIntent().getStringExtra(Constant.CONTENT);
-        String title=getIntent().getStringExtra(Constant.TITLE);
-        assert content!=null;
+        String content = getIntent().getStringExtra(Constant.CONTENT);
+        String title = getIntent().getStringExtra(Constant.TITLE);
+        assert content != null;
         //加载数据
-        mWebView.loadDataWithBaseURL(null,content,"text/html","utf-8",null);
+        mWebView.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
         mBing.title.setText(title);
     }
 
     @Override
     protected void onDestroy() {
-        if (mWebView!=null){
-            mWebView.loadDataWithBaseURL(null,"","text/html","utf-8",null);
+        if (mWebView != null) {
+            mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             //清楚历史记录
             mWebView.clearHistory();
             ((ViewGroup) mWebView.getParent()).removeView(mWebView);
             mWebView.destroy();
-            mWebView=null;
+            mWebView = null;
         }
         super.onDestroy();
     }
@@ -80,7 +80,7 @@ public class NewsContentActivity extends BaseActivity {
      * ps:图片可能会存在压缩的问题
      **/
     private void imgReset() {
-         mWebView.loadUrl("javascript:(function(){" +
+        mWebView.loadUrl("javascript:(function(){" +
                 "var objs = document.getElementsByTagName('img'); " +
                 "for(var i=0;i<objs.length;i++)  " +
                 "{"

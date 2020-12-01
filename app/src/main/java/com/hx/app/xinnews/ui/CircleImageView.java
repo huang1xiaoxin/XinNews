@@ -20,7 +20,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
-
 import com.hx.app.xinnews.R;
 
 @SuppressLint("AppCompatCustomView")
@@ -91,9 +90,9 @@ public class CircleImageView extends ImageView {
         mRoundRadius = array.getDimensionPixelOffset(R.styleable.CircleImageView_mRoundRadius, 10);
         array.recycle();
     }
+
     /**
      * 在onDraw中不要有过多复杂的逻辑，和过于复杂多余的计算，否则会导致绘制不全的现象
-     *
      *
      * @param canvas
      */

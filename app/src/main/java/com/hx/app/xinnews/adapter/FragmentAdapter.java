@@ -16,16 +16,16 @@ import java.util.List;
 public class FragmentAdapter extends FragmentStatePagerAdapter {
     private List<String> strings;
 
-    public FragmentAdapter(@NonNull FragmentManager fm, int behavior,List<String> strings) {
+    public FragmentAdapter(@NonNull FragmentManager fm, int behavior, List<String> strings) {
         super(fm, behavior);
-        this.strings=strings;
+        this.strings = strings;
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        NewsFragment fragment =new NewsFragment();
-        Bundle bundle=new Bundle();
+        NewsFragment fragment = new NewsFragment();
+        Bundle bundle = new Bundle();
         bundle.putString(Constant.TAB_TITLE, strings.get(position));
         fragment.setArguments(bundle);
         return fragment;

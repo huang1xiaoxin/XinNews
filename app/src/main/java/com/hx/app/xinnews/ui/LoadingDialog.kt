@@ -10,9 +10,9 @@ import com.hx.app.xinnews.R
 /**
  * 这里要继承Dialog，继承AlertDialog显示不了
  */
-class LoadingDialog constructor(context: Context, themeResId: Int) : Dialog(context, themeResId){
+class LoadingDialog constructor(context: Context, themeResId: Int) : Dialog(context, themeResId) {
 
-    constructor(context: Context): this(context, 0){
+    constructor(context: Context) : this(context, 0) {
 
     }
 
@@ -22,7 +22,7 @@ class LoadingDialog constructor(context: Context, themeResId: Int) : Dialog(cont
     class Builder constructor(context: Context) {
 
 
-        private  var context: Context=context;
+        private var context: Context = context;
         private var showMessage: String = "正在加载。。。"
         private var isShowMessage = true
         private var isCancelable = false
@@ -31,16 +31,16 @@ class LoadingDialog constructor(context: Context, themeResId: Int) : Dialog(cont
         /**
          * 是否显示加载提示信息
          */
-        fun setShowMessage(isShowMessage:Boolean):Builder{
-            this.isShowMessage=isShowMessage
+        fun setShowMessage(isShowMessage: Boolean): Builder {
+            this.isShowMessage = isShowMessage
             return this
         }
 
         /**
          * 加载提示信息
          */
-        fun setMessage(message:String):Builder{
-            this.showMessage=message
+        fun setMessage(message: String): Builder {
+            this.showMessage = message
             return this
         }
 
@@ -48,25 +48,25 @@ class LoadingDialog constructor(context: Context, themeResId: Int) : Dialog(cont
         /**
          * 是否可以点击返回键取消
          */
-        fun setCancelable(isCancelable:Boolean) :Builder{
-            this.isCancelable=isCancelable
+        fun setCancelable(isCancelable: Boolean): Builder {
+            this.isCancelable = isCancelable
             return this
         }
 
         /**
          * 是否可以点击外边取消
          */
-        fun setCancelOutside(isCancelOutside:Boolean) :Builder{
-            this.isCancelOutside=isCancelOutside
+        fun setCancelOutside(isCancelOutside: Boolean): Builder {
+            this.isCancelOutside = isCancelOutside
             return this
         }
 
-        fun create():LoadingDialog{
-            val view: View =LayoutInflater.from(context).inflate(R.layout.dailog_layout,null)
-            val loadingDialog =LoadingDialog(context,R.style.CustomDialog)
-            val message: TextView  =view.findViewById(R.id.text_view)
-            message.text=showMessage
-            message.visibility=if (isShowMessage) View.VISIBLE else View.GONE
+        fun create(): LoadingDialog {
+            val view: View = LayoutInflater.from(context).inflate(R.layout.dailog_layout, null)
+            val loadingDialog = LoadingDialog(context, R.style.CustomDialog)
+            val message: TextView = view.findViewById(R.id.text_view)
+            message.text = showMessage
+            message.visibility = if (isShowMessage) View.VISIBLE else View.GONE
             loadingDialog.setCancelable(isCancelable)
             loadingDialog.setCanceledOnTouchOutside(isCancelOutside)
             loadingDialog.setContentView(view)
