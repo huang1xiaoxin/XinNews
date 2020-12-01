@@ -31,7 +31,7 @@
         android:textAllCaps="true"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:textAlignment="center"
+        android:textAlignment="viewStart"
         tools:ignore="MissingConstraints" />
     <TextView
         android:id="@+id/time_text"
