@@ -1,5 +1,6 @@
 package com.hx.app.xinnews.fragment;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hx.app.xinnews.activity.NewsContentActivity;
+import com.hx.app.xinnews.adapter.MyMultiTypeAdapter;
 import com.hx.app.xinnews.base.BaseFragment;
+import com.hx.app.xinnews.bean.Items;
 import com.hx.app.xinnews.constant.Constant;
 import com.hx.app.xinnews.databinding.NewsListFagmentBinding;
 import com.hx.app.xinnews.mutitype.itemdata.NewsListItemData;
@@ -23,16 +26,22 @@ import com.hx.app.xinnews.viewmodel.MainViewModel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 
-public class NewsFragment extends BaseFragment<MainViewModel> {
 
+public class NewsFragment extends BaseFragment<MainViewModel>  {
+    //每次加载更多的时候加载10条
+    private final static int NUM=10;
+    private int mStartIndex=20;
     private NewsListFagmentBinding mBinding;
+    private String mChannel;
 
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding=NewsListFagmentBinding.inflate(inflater,container,false);
         mBinding.recycleView.setLayoutManager(new LinearLayoutManager(context));
         mBinding.recycleView.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
+        mAdapter.attach(mBinding.recycleView);
         return mBinding.getRoot();
     }
 
@@ -57,8 +66,8 @@ public class NewsFragment extends BaseFragment<MainViewModel> {
         showLoadingDialog();
         Bundle bundle=getArguments();
         assert bundle != null;
-        String channel=bundle.getString(Constant.TAB_TITLE,"头条");
-        mViewModel.getNewsTop20(channel);
+        mChannel=bundle.getString(Constant.TAB_TITLE,"头条");
+        mViewModel.getNewsTop20(mChannel);
     }
 
     @Override
@@ -68,6 +77,13 @@ public class NewsFragment extends BaseFragment<MainViewModel> {
             mAdapter.notifyDataSetChanged();
             dismissLoadingDialog();
         });
+
+        mViewModel.getLoadingMoreNewsLiveData().observe(this,newsListItemData ->{
+            Items items=new Items();
+            items.addAll(newsListItemData);
+            mAdapter.addData(items);
+            mAdapter.loadingComplete();
+        });
     }
 
     @Override
@@ -76,4 +92,9 @@ public class NewsFragment extends BaseFragment<MainViewModel> {
     }
 
 
+    @Override
+    public void onLoadMore() {
+        mViewModel.getMoreNews(mChannel,mStartIndex,NUM);
+        mStartIndex+=NUM;
+    }
 }

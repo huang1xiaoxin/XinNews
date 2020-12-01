@@ -13,10 +13,11 @@ import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.drakeet.multitype.MultiTypeAdapter;
+import com.hx.app.xinnews.adapter.MyMultiTypeAdapter;
 import com.hx.app.xinnews.bean.Items;
 import com.hx.app.xinnews.ui.LoadingDialog;
 
-public abstract class BaseFragment<T extends ViewModel> extends Fragment {
+public abstract class BaseFragment<T extends ViewModel> extends Fragment implements MyMultiTypeAdapter.OnLoadMoreListener  {
     private LoadingDialog mLoadingDialog;
 
     public Context context;
@@ -25,7 +26,7 @@ public abstract class BaseFragment<T extends ViewModel> extends Fragment {
 
     public T mViewModel;
 
-    public final MultiTypeAdapter mAdapter = new MultiTypeAdapter();
+    public  MyMultiTypeAdapter mAdapter;
 
     /**
      * 设置给MutableAdapter设置的集合
@@ -40,6 +41,7 @@ public abstract class BaseFragment<T extends ViewModel> extends Fragment {
                 "正在加载...").setCancelOutside(true).setShowMessage(true).create();
         mViewModel = initViewModel();
         context=getActivity();
+        mAdapter = new MyMultiTypeAdapter(this,context.getApplicationContext(),items);
     }
 
     @Nullable

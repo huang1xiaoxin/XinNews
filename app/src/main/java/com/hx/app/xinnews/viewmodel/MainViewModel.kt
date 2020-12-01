@@ -17,10 +17,11 @@ class MainViewModel :ViewModel()  {
     /**
      * 存放频道的LiveData
      */
-    private val mChannels:MutableLiveData<List<String>> = MutableLiveData();
+    private val mChannels:MutableLiveData<List<String>> = MutableLiveData()
 
     private val mNewsListLiveData:MutableLiveData<List<NewsListItemData>> = MutableLiveData()
 
+    private val mLoadingMoreNewsLiveData:MutableLiveData<List<NewsListItemData>> = MutableLiveData()
     /**
      * 创建协程来获取频道的数据
      */
@@ -32,10 +33,14 @@ class MainViewModel :ViewModel()  {
     }
 
     fun  getChannelLiveData():LiveData<List<String>>{
-        return mChannels;
+        return mChannels
     }
     fun getNewsListLiveData():LiveData<List<NewsListItemData>>{
         return mNewsListLiveData
+    }
+
+    fun getLoadingMoreNewsLiveData():LiveData<List<NewsListItemData>>{
+        return mLoadingMoreNewsLiveData
     }
 
     fun getNewsTop20( channel:String){
@@ -45,11 +50,19 @@ class MainViewModel :ViewModel()  {
             data.result.list.forEach {
                 list.add(NewsListItemData(it))
             }
-            mNewsListLiveData.postValue(list);
+            mNewsListLiveData.postValue(list)
         }
     }
 
-
-
+    fun getMoreNews(  channel:String,start:Int, num:Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            val list:MutableList<NewsListItemData> = mutableListOf()
+            val data=model.getNews(channel,start,num)
+            data.result.list.forEach {
+                list.add(NewsListItemData(it))
+            }
+            mLoadingMoreNewsLiveData.postValue(list)
+        }
+    }
 
 }
