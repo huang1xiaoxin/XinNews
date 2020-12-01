@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.hx.app.xinnews.activity.NewsContextActivity;
+import com.hx.app.xinnews.activity.NewsContentActivity;
 import com.hx.app.xinnews.base.BaseFragment;
 import com.hx.app.xinnews.constant.Constant;
 import com.hx.app.xinnews.databinding.NewsListFagmentBinding;
@@ -20,6 +20,7 @@ import com.hx.app.xinnews.mutitype.itemview.NewsListItemView;
 import com.hx.app.xinnews.myinterface.OnRecycleViewItemClickListener;
 import com.hx.app.xinnews.viewmodel.MainViewModel;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -38,11 +39,13 @@ public class NewsFragment extends BaseFragment<MainViewModel> {
     @Override
     protected void registerItems() {
         super.registerItems();
-        mAdapter.register(NewsListItemData.class,new NewsListItemView(context, new OnRecycleViewItemClickListener() {
+        mAdapter.register(NewsListItemData.class,new NewsListItemView(context,new OnRecycleViewItemClickListener(){
+
             @Override
-            public void onItemClick(@Nullable View view, int position) {
-               Intent intent=new Intent(context, NewsContextActivity.class);
-               startActivity(intent);
+            public void onItemClick(@Nullable View view, @NotNull String content) {
+                Intent intent=new Intent(context, NewsContentActivity.class);
+                intent.putExtra(Constant.CONTENT,content);
+                startActivity(intent);
             }
         }));
         setRecycleViewAdapter(mBinding.recycleView);

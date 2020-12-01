@@ -16,7 +16,6 @@ import java.lang.ref.WeakReference
 
 class NewsListItemView constructor(context:Context) : ItemViewBinder<NewsListItemData,NewsListItemView.ViewHolder>(){
     val mWeakReference: WeakReference<Context> = WeakReference(context)
-
     var mRecycleViewItemClickListener: OnRecycleViewItemClickListener? = null
 
     constructor(context: Context,recycleViewItemClickListener: OnRecycleViewItemClickListener):this(context){
@@ -30,23 +29,21 @@ class NewsListItemView constructor(context:Context) : ItemViewBinder<NewsListIte
         mWeakReference.get()?.let { Glide.with(it).load(item.pic).error(R.drawable.error).placeholder(R.drawable.loading)
                 .into(holder.imageView)}?:
                 holder.imageView.setImageResource(R.drawable.error)
+        holder.itemView.setOnClickListener(View.OnClickListener {
+            mRecycleViewItemClickListener?.onItemClick(it, item.content)
+        })
     }
 
     override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): NewsListItemView.ViewHolder {
         val view:View= inflater.inflate(R.layout.news_items,parent,false)
-        val holder=ViewHolder(view)
-        view.setOnClickListener(holder)
         return ViewHolder(view)
     }
 
-     inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView),View.OnClickListener {
+     inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView){
         val title: TextView =itemView.findViewById(R.id.title_text)
         val time:TextView=itemView.findViewById(R.id.time_text)
         val src:TextView=itemView.findViewById(R.id.sources_text)
         val imageView:CircleImageView=itemView.findViewById(R.id.image_view)
-        override fun onClick(p0: View?) {
-            mRecycleViewItemClickListener?.onItemClick(p0,layoutPosition )
-        }
     }
 
 

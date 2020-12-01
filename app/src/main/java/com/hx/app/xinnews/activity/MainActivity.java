@@ -4,6 +4,7 @@ package com.hx.app.xinnews.activity;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,6 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
-    private LoadingDialog mLoadingDialog;
 
     private MainViewModel mainViewModel;
 
@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity {
     private List<String> list =new ArrayList<>();
 
     @Override
-    protected View initView(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+    protected void initView(@Nullable Bundle savedInstanceState) {
         binding=ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         mainViewModel= new ViewModelProvider(this).get(MainViewModel.class);
@@ -70,7 +70,6 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-        return binding.getRoot();
     }
 
 

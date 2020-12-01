@@ -7,4 +7,5 @@ data class NewsListItemData constructor(val news:NewsBean) {
     val pic:String=news.pic
     val time:String=news.time;
     val sources:String =news.src;
+    val content:String=news.content
 }
