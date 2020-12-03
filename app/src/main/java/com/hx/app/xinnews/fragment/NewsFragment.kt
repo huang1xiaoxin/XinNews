@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,11 +30,11 @@ class NewsFragment : BaseFragment<MainViewModel>(), OnRefreshListener {
 
     override fun initView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         mBinding = inflater?.let { NewsListFagmentBinding.inflate(it, container, false) }!!
-        mBinding.recycleView.setLayoutManager(LinearLayoutManager(context))
+        mBinding.recycleView.layoutManager = LinearLayoutManager(context)
         mBinding.recycleView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         mAdapter.attach(mBinding.recycleView)
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
-        return mBinding.getRoot()
+        return mBinding.root
     }
 
     override fun registerItems() {
@@ -59,15 +60,16 @@ class NewsFragment : BaseFragment<MainViewModel>(), OnRefreshListener {
     }
 
     override fun registerLiveDataObserver() {
-        mViewModel.getNewsListLiveData().observe(this, {
-            items.addAll(it)
+        mViewModel.getNewsListLiveData().observe(this, Observer<List<NewsListItemData>> { newsListItemData ->
+            items.addAll(newsListItemData)
             mAdapter.notifyDataSetChanged()
             dismissLoadingDialog()
-            mBinding.swipeRefreshLayout.setRefreshing(false)
+            mBinding.swipeRefreshLayout.isRefreshing = false
         })
-        mViewModel.getLoadingMoreNewsLiveData().observe(this, {
+
+        mViewModel.getLoadingMoreNewsLiveData().observe(this, Observer<List<NewsListItemData>> { newsListItemData ->
             val items = Items()
-            items.addAll(it)
+            items.addAll(newsListItemData)
             mAdapter.addData(items)
             mAdapter.loadingComplete()
         })
@@ -96,3 +98,4 @@ class NewsFragment : BaseFragment<MainViewModel>(), OnRefreshListener {
         private const val NUM = 10
     }
 }
+
