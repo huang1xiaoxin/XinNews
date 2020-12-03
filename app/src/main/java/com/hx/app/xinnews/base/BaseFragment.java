@@ -123,5 +123,8 @@ public abstract class BaseFragment<T extends ViewModel> extends Fragment impleme
 
     }
 
+    @Override
+    public void onLoadMore() {
 
+    }
 }
