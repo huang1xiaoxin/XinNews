@@ -6,10 +6,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageButton
+        android:id="@+id/image_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/channel_list"
+        app:layout_constraintBottom_toBottomOf="@id/tab_layout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/image_button"
         app:layout_constraintTop_toTopOf="parent"
         app:tabBackground="@android:color/white"
         app:tabIndicatorColor="@color/tabSelectedText"
@@ -17,6 +31,7 @@
         app:tabIndicatorHeight="2dp"
         app:tabMode="scrollable"
         app:tabPadding="1dp"
+
         app:tabRippleColor="@android:color/transparent"
         app:tabTextAppearance="@style/TabLayoutUnTextSelected"
         tools:ignore="MissingConstraints" />
@@ -29,10 +44,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tab_layout"
         tools:ignore="MissingConstraints" />
+
     <ViewStub
         android:id="@+id/error_stud"
-        android:layout="@layout/loading_error_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout="@layout/loading_error_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

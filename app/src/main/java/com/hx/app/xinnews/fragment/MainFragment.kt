@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.hx.app.xinnews.R
@@ -51,6 +52,9 @@ class MainFragment : BaseFragment<MainViewModel>() {
             list.addAll(data)
             mFragmentAdapter.notifyDataSetChanged()
         })
+        mBinding.imageButton.setOnClickListener{
+            Navigation.findNavController(it).navigate(R.id.action_mainFragment_to_channelManagerActivity)
+        }
         return mBinding.root
     }
 

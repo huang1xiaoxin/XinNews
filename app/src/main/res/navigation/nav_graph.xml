@@ -5,5 +5,13 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.hx.app.xinnews.fragment.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_channelManagerActivity"
+            app:destination="@id/channelManagerActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/channelManagerActivity"
+        android:name="com.hx.app.xinnews.fragment.ChannelManagerActivity"
+        android:label="ChannelManagerActivity" />
 </navigation>

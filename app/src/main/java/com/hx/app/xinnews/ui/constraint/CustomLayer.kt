@@ -39,7 +39,7 @@ class CustomLayer @JvmOverloads constructor(context: Context, attr: AttributeSet
             style = Paint.Style.FILL_AND_STROKE
             color = Color.parseColor("#66000000")
             strokeWidth = 1.0F
-            textSize = 60.0F
+            textSize = 45.0F
         }
 
         mRectPaint.apply {
