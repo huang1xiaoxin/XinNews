@@ -24,4 +24,13 @@
         <enum name="mirror" value="1" />
         <enum name="repeat" value="2" />
     </attr>
+
+    <declare-styleable name="CustomConstraintHelper">
+        <attr name="referenced_ids" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomLayer">
+        <attr name="referenced_offset_x" format="string" />
+        <attr name="referenced_offset_y" format="string" />
+    </declare-styleable>
 </resources>
