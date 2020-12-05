@@ -82,28 +82,33 @@ class MainViewModel : ViewModel() {
      * 获取我的频道
      */
     fun getMyChannel(context: Context,key:String,defValue:String){
-        val myChannels by SharedPreferencesUtil(context,key,defValue)
-        val list = mutableListOf<String>()
-        myChannels.split(" ").forEach {
-            if (it != "") {
-                list.add(it)
+        viewModelScope.launch(Dispatchers.IO) {
+            val myChannels by SharedPreferencesUtil(context,key,defValue)
+            val list = mutableListOf<String>()
+            myChannels.split(" ").forEach {
+                if (it != "") {
+                    list.add(it)
+                }
             }
+            mMyChannelLiveData.postValue(list)
         }
-        mMyChannelLiveData.value=list
     }
 
     /**
      * 获取热门的pind
      */
     fun getHotChannel(context: Context,key:String,defValue:String){
-        val hotChannel by SharedPreferencesUtil(context,key,defValue)
-        val list= mutableListOf<String>()
-        hotChannel.split(" ").forEach{
-            if(it !=""){
-                list.add(it)
+        viewModelScope.launch(Dispatchers.IO) {
+            val hotChannel by SharedPreferencesUtil(context,key,defValue)
+            val list= mutableListOf<String>()
+            hotChannel.split(" ").forEach{
+                if(it !=""){
+                    list.add(it)
+                }
             }
+            mHotChannelLiveData.postValue(list)
         }
-        mHotChannelLiveData.value=list
+
     }
 
 }
