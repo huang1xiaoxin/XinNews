@@ -82,7 +82,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
         })
 
 
-        mBinding.imageButton.setOnClickListener{
+        mBinding.imageView.setOnClickListener{
             Navigation.findNavController(it).navigate(R.id.action_mainFragment_to_channelManagerActivity)
         }
         return mBinding.root
