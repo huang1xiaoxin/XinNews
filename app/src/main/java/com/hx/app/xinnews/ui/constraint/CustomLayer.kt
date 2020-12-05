@@ -15,6 +15,7 @@ class CustomLayer @JvmOverloads constructor(context: Context, attr: AttributeSet
     companion object {
         const val PLUS_TEXT = "+"
         const val REDUCE_TEXT = "-"
+        const val  NULL_TEXT=""
     }
 
 

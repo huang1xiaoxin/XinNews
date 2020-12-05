@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import androidx.constraintlayout.helper.widget.Layer
 import com.hx.app.xinnews.R
 import com.hx.app.xinnews.ui.constraint.CustomLayer
 
-class GrideViewAdapter(lists: MutableList<String>, context: Context) : BaseAdapter() {
+class GrideViewAdapter(lists: MutableList<String>, context: Context,val tag:String) : BaseAdapter() {
 
     private val strList: MutableList<String> = lists
 
@@ -23,6 +24,7 @@ class GrideViewAdapter(lists: MutableList<String>, context: Context) : BaseAdapt
             viewHolder = ViewHolder()
             viewHolder.textView = view.findViewById(R.id.text)
             viewHolder.layer = view.findViewById(R.id.layer)
+
             view.tag = viewHolder
         } else {
             view = convertView
@@ -31,6 +33,7 @@ class GrideViewAdapter(lists: MutableList<String>, context: Context) : BaseAdapt
             }
         }
         viewHolder?.textView?.text = strList[position]
+        viewHolder?.layer?.setTagDisplay(tag)
         return view
 
     }
