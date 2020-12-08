@@ -19,14 +19,14 @@ class MainViewModel : ViewModel() {
     /**
      * 存放频道的LiveData
      */
-    private val mChannels: MutableLiveData<List<String>> = MutableLiveData()
+     val mChannels: MutableLiveData<List<String>> = MutableLiveData()
 
-    private val mNewsListLiveData: MutableLiveData<List<NewsListItemData>> = MutableLiveData()
+     val mNewsListLiveData: MutableLiveData<List<NewsListItemData>> = MutableLiveData()
 
-    private val mLoadingMoreNewsLiveData: MutableLiveData<List<NewsListItemData>> = MutableLiveData()
+     val mLoadingMoreNewsLiveData: MutableLiveData<List<NewsListItemData>> = MutableLiveData()
 
-    private val mMyChannelLiveData:MutableLiveData<List<String>> = MutableLiveData()
-    private val mHotChannelLiveData:MutableLiveData<List<String>> = MutableLiveData()
+     val mMyChannelLiveData:MutableLiveData<List<String>> = MutableLiveData()
+     val mHotChannelLiveData:MutableLiveData<List<String>> = MutableLiveData()
 
     /**
      * 创建协程来获取频道的数据
@@ -36,24 +36,6 @@ class MainViewModel : ViewModel() {
             val data = model.getChannel()
             mChannels.postValue(data )
         }
-    }
-
-    fun getChannelLiveData(): LiveData<List<String>> {
-        return mChannels
-    }
-
-    fun getNewsListLiveData(): LiveData<List<NewsListItemData>> {
-        return mNewsListLiveData
-    }
-
-    fun getLoadingMoreNewsLiveData(): LiveData<List<NewsListItemData>> {
-        return mLoadingMoreNewsLiveData
-    }
-    fun getMyChannelLiveData():LiveData<List<String>>{
-        return mMyChannelLiveData
-    }
-    fun getHotChannelLiveData():LiveData<List<String>>{
-        return mHotChannelLiveData
     }
 
     fun getNewsTop20(channel: String) {

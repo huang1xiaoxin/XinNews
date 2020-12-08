@@ -17,10 +17,10 @@ abstract class CustomConstraintHelper @JvmOverloads constructor(context: Context
     }
 
     open fun readAttrs(attrs: AttributeSet?) {
-        attrs?.let { attrs ->
-            context.obtainStyledAttributes(attrs, R.styleable.CustomConstraintHelper).let {
-                handlerIds(it.getString(R.styleable.CustomConstraintHelper_referenced_ids))
-                it.recycle()
+        attrs?.let {
+            context.obtainStyledAttributes(it, R.styleable.CustomConstraintHelper).let { type ->
+                handlerIds(type.getString(R.styleable.CustomConstraintHelper_referenced_ids))
+                type.recycle()
             }
 
         }

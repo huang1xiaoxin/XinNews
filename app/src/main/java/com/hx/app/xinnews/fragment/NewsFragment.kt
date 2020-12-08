@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -23,13 +24,19 @@ import com.hx.app.xinnews.myinterface.OnRecycleViewItemClickListener
 import com.hx.app.xinnews.viewmodel.MainViewModel
 
 
-class NewsFragment : BaseFragment<MainViewModel>(), OnRefreshListener {
+class NewsFragment : BaseFragment(), OnRefreshListener {
     private var mStartIndex = 20
-    private lateinit var mBinding: NewsListFagmentBinding
+    private lateinit  var mBinding: NewsListFagmentBinding
     private lateinit var mChannel: String
 
     override fun initView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        mBinding = inflater?.let { NewsListFagmentBinding.inflate(it, container, false) }!!
+        inflater?.let {
+            NewsListFagmentBinding.inflate(it, container, false)
+        }.also {
+           it?.let {
+               mBinding=it
+           }
+        }
         mBinding.recycleView.layoutManager = LinearLayoutManager(context)
         mBinding.recycleView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         mAdapter.attach(mBinding.recycleView)
@@ -39,35 +46,38 @@ class NewsFragment : BaseFragment<MainViewModel>(), OnRefreshListener {
 
     override fun registerItems() {
         super.registerItems()
-        mAdapter.register(NewsListItemData::class.java, NewsListItemView(context, object : OnRecycleViewItemClickListener {
-            override fun onItemClick(view: View?, data: NewsListItemData) {
-                val intent = Intent(context, NewsContentActivity().javaClass)
-                intent.putExtra(CONTENT, data.content)
-                intent.putExtra(TITLE, data.title)
-                startActivity(intent)
-            }
-        }))
-        setRecycleViewAdapter(mBinding.recycleView)
+        context?.let {
+            mAdapter.register(NewsListItemData::class.java, NewsListItemView(it, object : OnRecycleViewItemClickListener {
+                override fun onItemClick(view: View?, data: NewsListItemData) {
+                    val intent = Intent(context, NewsContentActivity().javaClass).apply {
+                        putExtra(CONTENT, data.content)
+                        putExtra(TITLE, data.title)
+                    }
+                    startActivity(intent)
+                }
+            }))
+            setRecycleViewAdapter(mBinding.recycleView)
+        }
+
     }
 
     override fun loadingData() {
         showLoadingDialog()
-        val bundle = arguments
-        if (bundle != null) {
-            mChannel = bundle.getString(TAB_TITLE, "头条")
+        arguments?.let {
+            mChannel = it.getString(TAB_TITLE, "头条")
         }
         mViewModel.getNewsTop20(mChannel)
     }
 
     override fun registerLiveDataObserver() {
-        mViewModel.getNewsListLiveData().observe(this, Observer<List<NewsListItemData>> { newsListItemData ->
+        mViewModel.mNewsListLiveData.observe(this, Observer<List<NewsListItemData>> { newsListItemData ->
             items.addAll(newsListItemData)
             mAdapter.notifyDataSetChanged()
             dismissLoadingDialog()
             mBinding.swipeRefreshLayout.isRefreshing = false
         })
 
-        mViewModel.getLoadingMoreNewsLiveData().observe(this, Observer<List<NewsListItemData>> { newsListItemData ->
+        mViewModel.mLoadingMoreNewsLiveData.observe(this, Observer<List<NewsListItemData>> { newsListItemData ->
             val items = Items()
             items.addAll(newsListItemData)
             mAdapter.addData(items)
@@ -75,9 +85,6 @@ class NewsFragment : BaseFragment<MainViewModel>(), OnRefreshListener {
         })
     }
 
-    override fun initViewModel(): MainViewModel {
-        return ViewModelProvider(this).get(MainViewModel::class.java)
-    }
 
     override fun onLoadMore() {
         mViewModel.getMoreNews(mChannel, mStartIndex, NUM)
@@ -90,7 +97,7 @@ class NewsFragment : BaseFragment<MainViewModel>(), OnRefreshListener {
             items.clear()
         }
         mStartIndex = 20
-        mViewModel!!.getNewsTop20(mChannel!!)
+        mViewModel.getNewsTop20(mChannel)
     }
 
     companion object {

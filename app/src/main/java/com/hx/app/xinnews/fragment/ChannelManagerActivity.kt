@@ -34,16 +34,19 @@ class ChannelManagerActivity : BaseActivity() {
         val hotChannelAdapter = GrideViewAdapter(hotChannelList, this,CustomLayer.PLUS_TEXT)
         mBinding.myChannelGridView.adapter = myChannelAdapter
         mBinding.hotChannelGridView.adapter = hotChannelAdapter
-        mViewModel.getMyChannelLiveData().observe(this) {
+        mViewModel.mMyChannelLiveData.observe(this) {
             myChannelList.clear()
             myChannelList.addAll(it)
             myChannelAdapter.notifyDataSetChanged()
             dismissLoadingDialog()
         }
-        mViewModel.getHotChannelLiveData().observe(this) {
+        mViewModel.mHotChannelLiveData.observe(this) {
             hotChannelList.clear()
             hotChannelList.addAll(it)
             hotChannelAdapter.notifyDataSetChanged()
+        }
+        mBinding.editor.setOnClickListener{
+
         }
 
     }

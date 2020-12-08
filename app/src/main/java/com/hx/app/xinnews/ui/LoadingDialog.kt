@@ -63,13 +63,14 @@ class LoadingDialog constructor(context: Context, themeResId: Int) : Dialog(cont
 
         fun create(): LoadingDialog {
             val view: View = LayoutInflater.from(context).inflate(R.layout.dailog_layout, null)
-            val loadingDialog = LoadingDialog(context, R.style.CustomDialog)
             val message: TextView = view.findViewById(R.id.text_view)
             message.text = showMessage
             message.visibility = if (isShowMessage) View.VISIBLE else View.GONE
-            loadingDialog.setCancelable(isCancelable)
-            loadingDialog.setCanceledOnTouchOutside(isCancelOutside)
-            loadingDialog.setContentView(view)
+            val loadingDialog = LoadingDialog(context, R.style.CustomDialog).apply {
+                setCancelable(isCancelable)
+                setCanceledOnTouchOutside(isCancelOutside)
+                setContentView(view)
+            }
             return loadingDialog
         }
 

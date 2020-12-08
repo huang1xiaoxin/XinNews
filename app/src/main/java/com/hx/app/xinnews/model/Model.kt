@@ -24,13 +24,10 @@ class Model {
     /**
      * 获取频道
      */
-    suspend fun getChannel(): List<String>? {
+    suspend fun getChannel(): List<String> {
         val result = RetrofitApi.create().getChannel(APP_KEY).result
-        return if (result == null) {
-            listOf(NET_ERROR)
-        } else {
-            result.result
-        }
+        return result?.result ?: listOf(NET_ERROR)
+
     }
 
 }

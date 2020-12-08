@@ -10,7 +10,7 @@ import com.hx.app.xinnews.ui.constraint.CustomLayer
 import com.hx.app.xinnews.viewmodel.MainViewModel
 
 @Deprecated("用ChannelManagerActivity代替")
-class ChannelManageFragment : BaseFragment<MainViewModel>() {
+class ChannelManageFragment : BaseFragment() {
 
     private lateinit var mBinding: ChannelManageFragmentBinding
 

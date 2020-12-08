@@ -26,16 +26,19 @@ class NewsContentActivity : BaseActivity() {
                 ViewGroup.LayoutParams.MATCH_PARENT)
         mBing.linearLayout.addView(mWebView, layoutParams)
         showLoadingDialog()
-        val settings = mWebView.settings
-        settings.javaScriptEnabled = true //支持JS
-        settings.useWideViewPort = true //将图片调整到合适的webView的大小
-        settings.loadWithOverviewMode = true //缩放至屏幕的大小
-        //缩放操作
-        settings.setSupportZoom(true) //支持缩放，默认为true。是下面那个的前提。
-        settings.builtInZoomControls = true //设置内置的缩放控件。若为false，则该WebView不可缩放
-        settings.displayZoomControls = false //隐藏原生的缩放控件
-        //设置字体的大小
-        settings.textZoom = resources.getDimensionPixelOffset(R.dimen.content_title) * 4
+
+        mWebView.settings.apply {
+            javaScriptEnabled = true //支持JS
+            useWideViewPort = true //将图片调整到合适的webView的大小
+            loadWithOverviewMode = true //缩放至屏幕的大小
+            //缩放操作
+            setSupportZoom(true) //支持缩放，默认为true。是下面那个的前提。
+            builtInZoomControls = true //设置内置的缩放控件。若为false，则该WebView不可缩放
+            displayZoomControls = false //隐藏原生的缩放控件
+            //设置字体的大小
+            textZoom = resources.getDimensionPixelOffset(R.dimen.content_title) * 4
+        }
+
         mWebView.webViewClient = object : WebViewClient() {
             //数据加载完成
             override fun onPageFinished(view: WebView, url: String) {
@@ -50,7 +53,7 @@ class NewsContentActivity : BaseActivity() {
         val content = intent.getStringExtra(CONTENT)
         val title = intent.getStringExtra(TITLE)
         //加载数据
-        if (content != null) {
+        content?.let{
             mWebView.loadDataWithBaseURL(null, content, "text/html", "utf-8", null)
             mBing.title.text = title
         }

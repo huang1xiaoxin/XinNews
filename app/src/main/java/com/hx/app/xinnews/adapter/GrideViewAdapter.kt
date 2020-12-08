@@ -32,8 +32,10 @@ class GrideViewAdapter(lists: MutableList<String>, context: Context,val tag:Stri
                 viewHolder = it
             }
         }
-        viewHolder?.textView?.text = strList[position]
-        viewHolder?.layer?.setTagDisplay(tag)
+        viewHolder?.apply {
+            textView?.text = strList[position]
+            layer?.setTagDisplay(tag)
+        }
         return view
 
     }

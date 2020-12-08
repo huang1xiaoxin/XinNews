@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
@@ -21,10 +20,9 @@ import com.hx.app.xinnews.constant.HOT_CHANNEL_KEY
 import com.hx.app.xinnews.constant.MY_CHANNEL_KEY
 import com.hx.app.xinnews.constant.NET_ERROR
 import com.hx.app.xinnews.databinding.FragmentMainBinding
-import com.hx.app.xinnews.viewmodel.MainViewModel
 import java.util.*
 
-class MainFragment : BaseFragment<MainViewModel>() {
+class MainFragment : BaseFragment() {
     private lateinit var mBinding: FragmentMainBinding
 
 
@@ -32,44 +30,51 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
     private val list: MutableList<String> = ArrayList()
 
-     private var firstOpen:Boolean = true
+    private var firstOpen: Boolean = true
 
 
     override fun initView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         mBinding = FragmentMainBinding.inflate(layoutInflater)
         val viewPager: ViewPager = mBinding.viewPager
         mBinding.tabLayout.setupWithViewPager(viewPager)
-        //一定要用childFragmentManager,不然继续打开Fragment返回数据会空白
-        mFragmentAdapter = FragmentAdapter(parentFragmentManager,
+        mFragmentAdapter = FragmentAdapter(childFragmentManager,
                 BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, list)
         viewPager.adapter = mFragmentAdapter
         //设置缓存的数量
         viewPager.offscreenPageLimit = 4
         tabLayoutSelectedText()
-        var tempFirstOpen by SharedPreferencesUtil(context, FIRST_OPEN_KEY,true)
-        firstOpen=tempFirstOpen
-        if(firstOpen){
+        context?.let {
+            val tempFirstOpen by SharedPreferencesUtil(it, FIRST_OPEN_KEY, true)
+            firstOpen = tempFirstOpen
+        }
+        if (firstOpen) {
             mViewModel.getChannel()
-            mViewModel.getChannelLiveData().observe(this) {
-                val myChannelBuilder= StringBuilder()
-                val hotChannelBuilder= StringBuilder()
-                for ( i in it.indices){
-                    if (i<4){
+            mViewModel.mChannels.observe(this) {
+                val myChannelBuilder = StringBuilder()
+                val hotChannelBuilder = StringBuilder()
+                for (i in it.indices) {
+                    if (i < 4) {
                         myChannelBuilder.append(" ").append(it[i])
-                    }else{
+                    } else {
                         hotChannelBuilder.append(" ").append(it[i])
                     }
                 }
-                var myChannel by SharedPreferencesUtil(context, MY_CHANNEL_KEY,"头条 新闻 国内 国际")
-                var hotChannel by SharedPreferencesUtil(context, HOT_CHANNEL_KEY,"娱乐")
-                myChannel=myChannelBuilder.toString()
-                hotChannel=hotChannelBuilder.toString()
-                mViewModel.getMyChannel(context, MY_CHANNEL_KEY,"头条")
+                context?.let { con ->
+                    {
+                        var myChannel by SharedPreferencesUtil(con, MY_CHANNEL_KEY, "头条 新闻 国内 国际")
+                        var hotChannel by SharedPreferencesUtil(con, HOT_CHANNEL_KEY, "娱乐")
+                        myChannel = myChannelBuilder.toString()
+                        hotChannel = hotChannelBuilder.toString()
+                        mViewModel.getMyChannel(con, MY_CHANNEL_KEY, "头条")
+
+                    }
+                }
             }
-            firstOpen=false
+            firstOpen = false
         }
 
-        mViewModel.getMyChannelLiveData().observe(this, Observer { data ->
+
+        mViewModel.mMyChannelLiveData.observe(this, Observer { data ->
             dismissLoadingDialog()
             //数据访问失败的时候，加载失败的提示
             if (data[0] == NET_ERROR) {
@@ -82,7 +87,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
         })
 
 
-        mBinding.imageView.setOnClickListener{
+        mBinding.imageView.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_mainFragment_to_channelManagerActivity)
         }
         return mBinding.root
@@ -90,8 +95,10 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
     override fun loadingData() {
         showLoadingDialog()
-        if (!firstOpen){
-            mViewModel.getMyChannel(context, MY_CHANNEL_KEY,"头条")
+        if (!firstOpen) {
+            context?.let {
+                mViewModel.getMyChannel(it, MY_CHANNEL_KEY, "头条")
+            }
         }
 
     }
@@ -105,28 +112,31 @@ class MainFragment : BaseFragment<MainViewModel>() {
             }
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
-                if (p0!!.customView == null) {
-                    p0.setCustomView(R.layout.tab_layout_text)
+                p0?.let {
+                    it.customView?.let { view ->
+                        { //根据源码知道id一定是android.R.id.text1
+                            val textView = view.findViewById<TextView>(android.R.id.text1)
+                            textView?.setTextAppearance(R.style.TabLayoutUnTextSelected)
+                        }
+                    } ?: it.setCustomView(R.layout.tab_layout_text)
+
                 }
-                //根据源码知道id一定是android.R.id.text1
-                val textView = p0.customView!!.findViewById<TextView>(android.R.id.text1)
-                textView.setTextAppearance(R.style.TabLayoutUnTextSelected)
+
             }
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
-                if (p0?.customView == null) {
-                    p0?.setCustomView(R.layout.tab_layout_text)
+                p0?.let {
+                    it.customView?.let { view ->
+                        //根据源码知道id一定是android.R.id.text1
+                        val textView = view.findViewById<TextView>(android.R.id.text1)
+                        textView.setTextAppearance(R.style.TabLayoutTextSelected)
+                    } ?: it.setCustomView(R.layout.tab_layout_text)
+
                 }
-                //根据源码知道id一定是android.R.id.text1
-                val textView = p0?.customView!!.findViewById<TextView>(android.R.id.text1)
-                textView.setTextAppearance(R.style.TabLayoutTextSelected)
             }
 
         })
     }
 
-    override fun initViewModel(): MainViewModel {
-        return ViewModelProvider(this).get(MainViewModel::class.java)
-    }
 
 }
