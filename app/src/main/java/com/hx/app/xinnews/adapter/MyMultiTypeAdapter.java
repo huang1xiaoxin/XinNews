@@ -1,6 +1,7 @@
 package com.hx.app.xinnews.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
  * 自定义一个具有加载更多的Adapter
  */
 public class MyMultiTypeAdapter extends MultiTypeAdapter {
+    private final static String TAG=" MyMultiTypeAdapter";
     //MultiTypeAdapter中有一个方法getItems()可以获取到一个集合，
     // 但是因为这个集合是Kotlin类型的，不能进行转换，所以通过传参数的方式
     private final Items mItems;
@@ -47,6 +49,7 @@ public class MyMultiTypeAdapter extends MultiTypeAdapter {
         onMyScrollerListener.setLoadingMoreTextItemData(initLoadingMoreNotifyItemData());
         mRecycleView.addOnScrollListener(onMyScrollerListener);
         registerLoadingMoreNotifyItem(LoadingMoreTextItemData.class, new LoadingMoreTextItemView());
+        Log.e(TAG, "attach: Adapter绑定RecycleView" );
     }
 
     public final void addData(Items items) {
@@ -54,6 +57,7 @@ public class MyMultiTypeAdapter extends MultiTypeAdapter {
         //移除加载更多
         mItems.remove(tempSize);
         mItems.addAll(items);
+        Log.e(TAG, "addData: 添加了"+items.size()+"条数据" );
         //设置Item
         notifyItemRangeInserted(tempSize, items.size() - 1);
     }
@@ -116,6 +120,7 @@ public class MyMultiTypeAdapter extends MultiTypeAdapter {
                     mItems.add(mLoadingMoreTextItemData);
                     mAdapter.notifyItemInserted(mItems.size() - 1);
                 }
+                Log.e(TAG, "onScrolled: 上拉更新开始加载" );
                 loadMoreListener.onLoadMore();
 
             }

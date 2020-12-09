@@ -1,6 +1,7 @@
 package com.hx.app.xinnews.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -16,6 +17,10 @@ class NewsContentActivity : BaseActivity() {
 
     //使用ApplicationContext防止内存泄露
     private lateinit var mWebView: WebView
+
+    companion object{
+        const val  TAG="""NewsContentActivity"""
+    }
 
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -45,6 +50,7 @@ class NewsContentActivity : BaseActivity() {
                 super.onPageFinished(view, url)
                 imgReset()
                 dismissLoadingDialog()
+                Log.e(TAG, "onPageFinished: 网页内容加载完成" )
             }
         }
     }
@@ -55,6 +61,7 @@ class NewsContentActivity : BaseActivity() {
         //加载数据
         content?.let{
             mWebView.loadDataWithBaseURL(null, content, "text/html", "utf-8", null)
+            Log.e(TAG, "loadingData: 加载Html数据$it")
             mBing.title.text = title
         }
 

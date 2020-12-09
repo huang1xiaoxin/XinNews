@@ -2,6 +2,7 @@ package com.hx.app.xinnews.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ class NewsFragment : BaseFragment(), OnRefreshListener {
     private lateinit  var mBinding: NewsListFagmentBinding
     private lateinit var mChannel: String
 
+
     override fun initView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         inflater?.let {
             NewsListFagmentBinding.inflate(it, container, false)
@@ -43,7 +45,6 @@ class NewsFragment : BaseFragment(), OnRefreshListener {
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         return mBinding.root
     }
-
     override fun registerItems() {
         super.registerItems()
         context?.let {
@@ -54,6 +55,7 @@ class NewsFragment : BaseFragment(), OnRefreshListener {
                         putExtra(TITLE, data.title)
                     }
                     startActivity(intent)
+                    Log.e(TAG, "onItemClick: 点击了${data.title}" )
                 }
             }))
             setRecycleViewAdapter(mBinding.recycleView)
@@ -64,6 +66,7 @@ class NewsFragment : BaseFragment(), OnRefreshListener {
     override fun loadingData() {
         arguments?.let {
             mChannel = it.getString(TAB_TITLE, "头条")
+            Log.e(TAG, "loadingData: 当前页面的的频道是$mChannel")
         }
         mViewModel.getNewsTop20(mChannel)
     }
@@ -102,6 +105,7 @@ class NewsFragment : BaseFragment(), OnRefreshListener {
     companion object {
         //每次加载更多的时候加载10条
         private const val NUM = 10
+        const val TAG="""NewsFragment"""
     }
 }
 

@@ -13,6 +13,7 @@ import com.hx.app.xinnews.constant.TITLE
 import com.hx.app.xinnews.databinding.NewsContextLayoutBinding
 import com.hx.app.xinnews.viewmodel.MainViewModel
 
+@Deprecated("用NewsContentActivity代替")
 class NewsContentFragment : BaseFragment() {
 
     private lateinit var mBinding: NewsContextLayoutBinding

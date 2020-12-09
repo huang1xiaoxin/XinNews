@@ -1,6 +1,7 @@
 package com.hx.app.xinnews.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +24,10 @@ import com.hx.app.xinnews.databinding.FragmentMainBinding
 import java.util.*
 
 class MainFragment : BaseFragment() {
+    companion object{
+        const val TAG: String = """"MainFragment"""
+    }
 
-    private val TAG: String = """"MainFragment"""
 
     private lateinit var mBinding: FragmentMainBinding
 
@@ -52,43 +55,7 @@ class MainFragment : BaseFragment() {
         }
         if (firstOpen) {
             mViewModel.getChannel()
-            mViewModel.mChannels.observe(this) {
-                val myChannelBuilder = StringBuilder()
-                val hotChannelBuilder = StringBuilder()
-                for (i in it.indices) {
-                    if (i < 4) {
-                        myChannelBuilder.append(" ").append(it[i])
-                    } else {
-                        hotChannelBuilder.append(" ").append(it[i])
-                    }
-                }
-                val myChannel = myChannelBuilder.toString()
-                val hotChannel = hotChannelBuilder.toString()
-                activity?.let { con ->
-                    SharedPreferencesUtil(con).putValue(MY_CHANNEL_KEY, myChannel)
-                    SharedPreferencesUtil(con).putValue(HOT_CHANNEL_KEY, hotChannel)
-                    mViewModel.getMyChannel(con, MY_CHANNEL_KEY, "头条")
-                    SharedPreferencesUtil(con).putValue(FIRST_OPEN_KEY, false)
-                }
-                firstOpen=false
-            }
-
         }
-
-
-        mViewModel.mMyChannelLiveData.observe(this, Observer { data ->
-            dismissLoadingDialog()
-            //数据访问失败的时候，加载失败的提示
-            if (data[0] == NET_ERROR) {
-                mBinding.errorStud.inflate()
-                return@Observer
-            }
-            list.clear()
-            list.addAll(data)
-            mFragmentAdapter.notifyDataSetChanged()
-        })
-
-
         mBinding.imageView.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_mainFragment_to_channelManagerActivity)
         }
@@ -101,6 +68,43 @@ class MainFragment : BaseFragment() {
                 mViewModel.getMyChannel(it, MY_CHANNEL_KEY, "头条")
             }
         }
+
+    }
+
+    override fun registerLiveDataObserver() {
+        super.registerLiveDataObserver()
+        mViewModel.mChannels.observe(this) {
+            val myChannelBuilder = StringBuilder()
+            val hotChannelBuilder = StringBuilder()
+            for (i in it.indices) {
+                if (i < 4) {
+                    myChannelBuilder.append(" ").append(it[i])
+                } else {
+                    hotChannelBuilder.append(" ").append(it[i])
+                }
+            }
+            val myChannel = myChannelBuilder.toString()
+            val hotChannel = hotChannelBuilder.toString()
+            activity?.let { con ->
+                SharedPreferencesUtil(con).putValue(MY_CHANNEL_KEY, myChannel)
+                SharedPreferencesUtil(con).putValue(HOT_CHANNEL_KEY, hotChannel)
+                mViewModel.getMyChannel(con, MY_CHANNEL_KEY, "头条")
+                Log.e(TAG, "initView: 第一次启动应用获取频道：$myChannel  $hotChannel")
+                SharedPreferencesUtil(con).putValue(FIRST_OPEN_KEY, false)
+            }
+            firstOpen=false
+        }
+        mViewModel.mMyChannelLiveData.observe(this, Observer { data ->
+            dismissLoadingDialog()
+            //数据访问失败的时候，加载失败的提示
+            if (data[0] == NET_ERROR) {
+                mBinding.errorStud.inflate()
+                return@Observer
+            }
+            list.clear()
+            list.addAll(data)
+            mFragmentAdapter.notifyDataSetChanged()
+        })
 
     }
 
