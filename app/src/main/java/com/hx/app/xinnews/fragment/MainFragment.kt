@@ -87,11 +87,13 @@ class MainFragment : BaseFragment() {
             val myChannel = myChannelBuilder.toString()
             val hotChannel = hotChannelBuilder.toString()
             activity?.let { con ->
-                SharedPreferencesUtil(con).putValue(MY_CHANNEL_KEY, myChannel)
-                SharedPreferencesUtil(con).putValue(HOT_CHANNEL_KEY, hotChannel)
+                SharedPreferencesUtil(con).setValue {
+                    putString(MY_CHANNEL_KEY, myChannel)
+                    putString(HOT_CHANNEL_KEY, hotChannel)
+                    putBoolean(FIRST_OPEN_KEY, false)
+                }
                 mViewModel.getMyChannel(con, MY_CHANNEL_KEY, "头条")
                 Log.e(TAG, "initView: 第一次启动应用获取频道：$myChannel  $hotChannel")
-                SharedPreferencesUtil(con).putValue(FIRST_OPEN_KEY, false)
             }
             firstOpen = false
         }

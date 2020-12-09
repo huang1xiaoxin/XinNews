@@ -1,12 +1,10 @@
 package com.hx.app.xinnews.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.hx.app.xinnews.adapter.GrideViewAdapter
 import com.hx.app.xinnews.base.BaseFragment
@@ -15,8 +13,6 @@ import com.hx.app.xinnews.constant.HOT_CHANNEL_KEY
 import com.hx.app.xinnews.constant.MY_CHANNEL_KEY
 import com.hx.app.xinnews.databinding.ChannelManageFragmentBinding
 import com.hx.app.xinnews.ui.constraint.CustomLayer
-import com.hx.app.xinnews.viewmodel.MainViewModel
-import kotlin.math.log
 
 class ChannelManageFragment : BaseFragment() {
 
@@ -115,8 +111,10 @@ class ChannelManageFragment : BaseFragment() {
             hotChannelBuilder.append(" ").append(it)
         }
         context?.let {
-            SharedPreferencesUtil(it).putValue(MY_CHANNEL_KEY, myChannelBuilder.toString())
-            SharedPreferencesUtil(it).putValue(HOT_CHANNEL_KEY, hotChannelBuilder.toString())
+            SharedPreferencesUtil(it).setValue {
+                putString(MY_CHANNEL_KEY, myChannelBuilder.toString())
+                putString(HOT_CHANNEL_KEY, hotChannelBuilder.toString())
+            }
         }
     }
 
