@@ -21,13 +21,12 @@ import com.hx.app.xinnews.constant.HOT_CHANNEL_KEY
 import com.hx.app.xinnews.constant.MY_CHANNEL_KEY
 import com.hx.app.xinnews.constant.NET_ERROR
 import com.hx.app.xinnews.databinding.FragmentMainBinding
-import java.util.*
+import java.util.ArrayList
 
 class MainFragment : BaseFragment() {
-    companion object{
+    companion object {
         const val TAG: String = """"MainFragment"""
     }
-
 
     private lateinit var mBinding: FragmentMainBinding
 
@@ -38,8 +37,9 @@ class MainFragment : BaseFragment() {
 
     private var firstOpen: Boolean = true
 
-
-    override fun initView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun initView(
+            inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         mBinding = FragmentMainBinding.inflate(layoutInflater)
         val viewPager: ViewPager = mBinding.viewPager
         mBinding.tabLayout.setupWithViewPager(viewPager)
@@ -58,7 +58,8 @@ class MainFragment : BaseFragment() {
             mViewModel.getChannel()
         }
         mBinding.imageView.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_mainFragment_to_channelManageFragment)
+            Navigation.findNavController(it)
+                    .navigate(R.id.action_mainFragment_to_channelManageFragment)
         }
         return mBinding.root
     }
@@ -92,7 +93,7 @@ class MainFragment : BaseFragment() {
                 Log.e(TAG, "initView: 第一次启动应用获取频道：$myChannel  $hotChannel")
                 SharedPreferencesUtil(con).putValue(FIRST_OPEN_KEY, false)
             }
-            firstOpen=false
+            firstOpen = false
         }
         mViewModel.mMyChannelLiveData.observe(this, Observer { data ->
             dismissLoadingDialog()
@@ -105,7 +106,6 @@ class MainFragment : BaseFragment() {
             list.addAll(data)
             mFragmentAdapter.notifyDataSetChanged()
         })
-
     }
 
     /**
@@ -118,30 +118,29 @@ class MainFragment : BaseFragment() {
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
                 p0?.let {
+                    if (it.customView == null) {
+                        it.setCustomView(R.layout.tab_layout_text)
+                    }
                     it.customView?.let { view ->
-                        { //根据源码知道id一定是android.R.id.text1
-                            val textView = view.findViewById<TextView>(android.R.id.text1)
-                            textView?.setTextAppearance(R.style.TabLayoutUnTextSelected)
-                        }
-                    } ?: it.setCustomView(R.layout.tab_layout_text)
-
+                        //根据源码知道id一定是android.R.id.text1
+                        val textView = view.findViewById<TextView>(android.R.id.text1)
+                        textView.setTextAppearance(R.style.TabLayoutUnTextSelected)
+                    }
                 }
-
             }
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 p0?.let {
+                    if (it.customView == null) {
+                        it.setCustomView(R.layout.tab_layout_text)
+                    }
                     it.customView?.let { view ->
                         //根据源码知道id一定是android.R.id.text1
                         val textView = view.findViewById<TextView>(android.R.id.text1)
                         textView.setTextAppearance(R.style.TabLayoutTextSelected)
-                    } ?: it.setCustomView(R.layout.tab_layout_text)
-
+                    }
                 }
             }
-
         })
     }
-
-
 }
