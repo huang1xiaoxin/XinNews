@@ -43,6 +43,7 @@ class MainFragment : BaseFragment() {
         mBinding = FragmentMainBinding.inflate(layoutInflater)
         val viewPager: ViewPager = mBinding.viewPager
         mBinding.tabLayout.setupWithViewPager(viewPager)
+        //用childFragmentManager，解决导航到Fragment中出现空白
         mFragmentAdapter = FragmentAdapter(childFragmentManager,
                 BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, list)
         viewPager.adapter = mFragmentAdapter
@@ -57,7 +58,7 @@ class MainFragment : BaseFragment() {
             mViewModel.getChannel()
         }
         mBinding.imageView.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_mainFragment_to_channelManagerActivity)
+            Navigation.findNavController(it).navigate(R.id.action_mainFragment_to_channelManageFragment)
         }
         return mBinding.root
     }
@@ -68,7 +69,7 @@ class MainFragment : BaseFragment() {
                 mViewModel.getMyChannel(it, MY_CHANNEL_KEY, "头条")
             }
         }
-
+        Log.e(TAG, "@@loadingData: " )
     }
 
     override fun registerLiveDataObserver() {
@@ -141,6 +142,26 @@ class MainFragment : BaseFragment() {
             }
 
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e(TAG, "onPause: @@@ 页面赞停")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.e(TAG, "@@onDestroyView: " )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e(TAG, "@@onDestroy: " )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e(TAG, "@@onResume: ")
     }
 
 
