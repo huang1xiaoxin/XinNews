@@ -25,7 +25,7 @@ import java.util.ArrayList
 
 class MainFragment : BaseFragment() {
     companion object {
-        const val TAG: String = """"MainFragment"""
+        const val TAG: String = "MainFragment"
     }
 
     private lateinit var mBinding: FragmentMainBinding

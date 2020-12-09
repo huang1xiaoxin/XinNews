@@ -21,7 +21,7 @@ class NewsContentFragment : BaseFragment() {
     private lateinit var mWebView: WebView
 
     companion object{
-        const val  TAG="""NewsContentFragment"""
+        const val  TAG="NewsContentFragment"
     }
 
 
@@ -89,13 +89,13 @@ class NewsContentFragment : BaseFragment() {
      * ps:图片可能会存在压缩的问题
      */
     private fun imgReset() {
-        mWebView.loadUrl("javascript:(function(){" +
-                "var objs = document.getElementsByTagName('img'); " +
-                "for(var i=0;i<objs.length;i++)  " +
-                "{"
-                + "var img = objs[i];   " +
-                "    img.style.width = '100%'; img.style.height = 'auto';  " +
-                "}" +
-                "})()")
+        mWebView.loadUrl("""javascript:(function(){
+                var objs = document.getElementsByTagName('img'); 
+                for(var i=0;i<objs.length;i++)  
+                {
+                 var img = objs[i];   
+                 img.style.width = '100%'; img.style.height = 'auto';  
+                } 
+                })()""")
     }
 }

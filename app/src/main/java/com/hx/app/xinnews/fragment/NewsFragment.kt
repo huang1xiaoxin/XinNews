@@ -102,7 +102,7 @@ class NewsFragment : BaseFragment(), OnRefreshListener {
     companion object {
         //每次加载更多的时候加载10条
         private const val NUM = 10
-        const val TAG = """NewsFragment"""
+        const val TAG = "NewsFragment"
     }
 }
 

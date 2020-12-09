@@ -57,19 +57,19 @@ class ChannelManageFragment : BaseFragment() {
             hotChannelAdapter?.notifyDataSetChanged()
         }
         mBinding.editor.setOnClickListener {
-            if (mBinding.editor.text == """完成""") {
+            if (mBinding.editor.text == "完成") {
                 myChannelAdapter?.tag = CustomLayer.NULL_TEXT
                 myChannelAdapter?.notifyDataSetChanged()
-                mBinding.editor.text = """编辑"""
+                mBinding.editor.text = "编辑"
             } else {
                 myChannelAdapter?.tag = CustomLayer.REDUCE_TEXT
                 myChannelAdapter?.notifyDataSetChanged()
-                mBinding.editor.text = """完成"""
+                mBinding.editor.text = "完成"
             }
 
         }
         mBinding.myChannelGridView.setOnItemClickListener { adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
-            if (mBinding.editor.text == """完成""") {
+            if (mBinding.editor.text == "完成") {
                 val removeTemp = myChannelList[i]
                 myChannelList.removeAt(i)
                 hotChannelList.add(removeTemp)
