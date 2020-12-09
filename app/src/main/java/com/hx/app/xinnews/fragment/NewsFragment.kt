@@ -1,18 +1,16 @@
 package com.hx.app.xinnews.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.hx.app.xinnews.activity.NewsContentActivity
+import com.hx.app.xinnews.R
 import com.hx.app.xinnews.base.BaseFragment
 import com.hx.app.xinnews.bean.Items
 import com.hx.app.xinnews.constant.CONTENT
@@ -22,45 +20,43 @@ import com.hx.app.xinnews.databinding.NewsListFagmentBinding
 import com.hx.app.xinnews.mutitype.itemdata.NewsListItemData
 import com.hx.app.xinnews.mutitype.itemview.NewsListItemView
 import com.hx.app.xinnews.myinterface.OnRecycleViewItemClickListener
-import com.hx.app.xinnews.viewmodel.MainViewModel
-
 
 class NewsFragment : BaseFragment(), OnRefreshListener {
     private var mStartIndex = 20
-    private lateinit  var mBinding: NewsListFagmentBinding
+    private lateinit var mBinding: NewsListFagmentBinding
     private lateinit var mChannel: String
 
-
-    override fun initView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        inflater?.let {
-            NewsListFagmentBinding.inflate(it, container, false)
-        }.also {
-           it?.let {
-               mBinding=it
-           }
-        }
+    override fun initView(
+            inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        mBinding = NewsListFagmentBinding.inflate(layoutInflater)
         mBinding.recycleView.layoutManager = LinearLayoutManager(context)
-        mBinding.recycleView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        mBinding.recycleView.addItemDecoration(
+                DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         mAdapter.attach(mBinding.recycleView)
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         return mBinding.root
     }
+
     override fun registerItems() {
         super.registerItems()
         context?.let {
-            mAdapter.register(NewsListItemData::class.java, NewsListItemView(it, object : OnRecycleViewItemClickListener {
-                override fun onItemClick(view: View?, data: NewsListItemData) {
-                    val intent = Intent(context, NewsContentActivity().javaClass).apply {
-                        putExtra(CONTENT, data.content)
-                        putExtra(TITLE, data.title)
-                    }
-                    startActivity(intent)
-                    Log.e(TAG, "onItemClick: 点击了${data.title}" )
-                }
-            }))
+            mAdapter.register(NewsListItemData::class.java,
+                    NewsListItemView(it, object : OnRecycleViewItemClickListener {
+                        override fun onItemClick(view: View?, data: NewsListItemData) {
+                            val bundle = Bundle().apply {
+                                putString(CONTENT, data.content)
+                                putString(TITLE, data.title)
+                            }
+                            view?.let {
+                                Navigation.findNavController(it).navigate(R.id
+                                        .action_mainFragment_to_newsContentFragment, bundle)
+                            }
+                            Log.e(TAG, "onItemClick: 点击了${data.title}")
+                        }
+                    }))
             setRecycleViewAdapter(mBinding.recycleView)
         }
-
     }
 
     override fun loadingData() {
@@ -72,21 +68,22 @@ class NewsFragment : BaseFragment(), OnRefreshListener {
     }
 
     override fun registerLiveDataObserver() {
-        mViewModel.mNewsListLiveData.observe(this, Observer<List<NewsListItemData>> { newsListItemData ->
-            items.addAll(newsListItemData)
-            mAdapter.notifyDataSetChanged()
-            dismissLoadingDialog()
-            mBinding.swipeRefreshLayout.isRefreshing = false
-        })
+        mViewModel.mNewsListLiveData.observe(this,
+                Observer<List<NewsListItemData>> { newsListItemData ->
+                    items.addAll(newsListItemData)
+                    mAdapter.notifyDataSetChanged()
+                    dismissLoadingDialog()
+                    mBinding.swipeRefreshLayout.isRefreshing = false
+                })
 
-        mViewModel.mLoadingMoreNewsLiveData.observe(this, Observer<List<NewsListItemData>> { newsListItemData ->
-            val items = Items()
-            items.addAll(newsListItemData)
-            mAdapter.addData(items)
-            mAdapter.loadingComplete()
-        })
+        mViewModel.mLoadingMoreNewsLiveData.observe(this,
+                Observer<List<NewsListItemData>> { newsListItemData ->
+                    val items = Items()
+                    items.addAll(newsListItemData)
+                    mAdapter.addData(items)
+                    mAdapter.loadingComplete()
+                })
     }
-
 
     override fun onLoadMore() {
         mViewModel.getMoreNews(mChannel, mStartIndex, NUM)
@@ -105,7 +102,7 @@ class NewsFragment : BaseFragment(), OnRefreshListener {
     companion object {
         //每次加载更多的时候加载10条
         private const val NUM = 10
-        const val TAG="""NewsFragment"""
+        const val TAG = """NewsFragment"""
     }
 }
 

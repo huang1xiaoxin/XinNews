@@ -89,6 +89,10 @@ class ChannelManageFragment : BaseFragment() {
         return mBinding.root
     }
 
+    override fun registerLiveDataObserver() {
+        super.registerLiveDataObserver()
+    }
+
     /**
      * 加载数据
      */
