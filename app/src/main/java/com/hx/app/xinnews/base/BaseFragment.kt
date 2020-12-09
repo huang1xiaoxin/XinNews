@@ -23,7 +23,6 @@ abstract class BaseFragment : Fragment(), OnLoadMoreListener {
     val mViewModel:MainViewModel by viewModels()
 
     lateinit var mAdapter: MyMultiTypeAdapter
-
     private var mLoadingDialog: LoadingDialog? = null
     private var isFist = true
 

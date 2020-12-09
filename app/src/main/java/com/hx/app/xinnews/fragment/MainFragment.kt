@@ -23,6 +23,9 @@ import com.hx.app.xinnews.databinding.FragmentMainBinding
 import java.util.*
 
 class MainFragment : BaseFragment() {
+
+    private val TAG: String = """"MainFragment"""
+
     private lateinit var mBinding: FragmentMainBinding
 
 
@@ -43,8 +46,10 @@ class MainFragment : BaseFragment() {
         //设置缓存的数量
         viewPager.offscreenPageLimit = 4
         tabLayoutSelectedText()
-        context?.let {
-            val tempFirstOpen by SharedPreferencesUtil(it, FIRST_OPEN_KEY, true)
+
+        activity?.let {
+            SharedPreferencesUtil(it).putValue(FIRST_OPEN_KEY, true)
+            val tempFirstOpen: Boolean = SharedPreferencesUtil(it).findValue(FIRST_OPEN_KEY, true)
             firstOpen = tempFirstOpen
         }
         if (firstOpen) {
@@ -59,18 +64,16 @@ class MainFragment : BaseFragment() {
                         hotChannelBuilder.append(" ").append(it[i])
                     }
                 }
-                context?.let { con ->
-                    {
-                        var myChannel by SharedPreferencesUtil(con, MY_CHANNEL_KEY, "头条 新闻 国内 国际")
-                        var hotChannel by SharedPreferencesUtil(con, HOT_CHANNEL_KEY, "娱乐")
-                        myChannel = myChannelBuilder.toString()
-                        hotChannel = hotChannelBuilder.toString()
-                        mViewModel.getMyChannel(con, MY_CHANNEL_KEY, "头条")
-
-                    }
+                val myChannel = myChannelBuilder.toString()
+                val hotChannel = hotChannelBuilder.toString()
+                activity?.let { con ->
+                    SharedPreferencesUtil(con).putValue(MY_CHANNEL_KEY, myChannel)
+                    SharedPreferencesUtil(con).putValue(HOT_CHANNEL_KEY, hotChannel)
+                    mViewModel.getMyChannel(con, MY_CHANNEL_KEY, "头条")
+                    SharedPreferencesUtil(con).putValue(FIRST_OPEN_KEY, false)
                 }
             }
-            firstOpen = false
+
         }
 
 

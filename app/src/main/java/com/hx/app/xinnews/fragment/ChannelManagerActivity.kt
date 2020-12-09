@@ -16,7 +16,9 @@ class ChannelManagerActivity : BaseActivity() {
 
     private lateinit var mViewModel: MainViewModel
 
+
     private val myChannelList: MutableList<String> = mutableListOf()
+
     private val hotChannelList: MutableList<String> = mutableListOf()
 
 
@@ -46,7 +48,8 @@ class ChannelManagerActivity : BaseActivity() {
             hotChannelAdapter.notifyDataSetChanged()
         }
         mBinding.editor.setOnClickListener{
-
+            myChannelAdapter.tag=CustomLayer.PLUS_TEXT
+            myChannelAdapter.notifyDataSetChanged()
         }
 
     }

@@ -10,9 +10,10 @@ import androidx.constraintlayout.helper.widget.Layer
 import com.hx.app.xinnews.R
 import com.hx.app.xinnews.ui.constraint.CustomLayer
 
-class GrideViewAdapter(lists: MutableList<String>, context: Context,val tag:String) : BaseAdapter() {
+class GrideViewAdapter(lists: MutableList<String>, context: Context,var tag:String) : BaseAdapter() {
 
     private val strList: MutableList<String> = lists
+
 
     private val mContext = context
 
