@@ -47,9 +47,11 @@ abstract class BaseFragment : Fragment(), OnLoadMoreListener {
     override fun onResume() {
         super.onResume()
         if (isFist) {
-            loadingData()
+            showLoadingDialog()
             isFist = false
         }
+        loadingData()
+
     }
 
     /**

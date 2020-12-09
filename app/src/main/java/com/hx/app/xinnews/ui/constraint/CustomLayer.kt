@@ -19,7 +19,7 @@ class CustomLayer @JvmOverloads constructor(context: Context, attr: AttributeSet
     }
 
 
-    private var mTagText = PLUS_TEXT
+     var mTagText = PLUS_TEXT
 
     private val mPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val mRectPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)

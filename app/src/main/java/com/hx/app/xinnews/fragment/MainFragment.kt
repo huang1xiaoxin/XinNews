@@ -48,9 +48,7 @@ class MainFragment : BaseFragment() {
         tabLayoutSelectedText()
 
         activity?.let {
-            SharedPreferencesUtil(it).putValue(FIRST_OPEN_KEY, true)
-            val tempFirstOpen: Boolean = SharedPreferencesUtil(it).findValue(FIRST_OPEN_KEY, true)
-            firstOpen = tempFirstOpen
+            firstOpen = SharedPreferencesUtil(it).findValue(FIRST_OPEN_KEY, true)
         }
         if (firstOpen) {
             mViewModel.getChannel()
@@ -72,6 +70,7 @@ class MainFragment : BaseFragment() {
                     mViewModel.getMyChannel(con, MY_CHANNEL_KEY, "头条")
                     SharedPreferencesUtil(con).putValue(FIRST_OPEN_KEY, false)
                 }
+                firstOpen=false
             }
 
         }
@@ -97,7 +96,6 @@ class MainFragment : BaseFragment() {
     }
 
     override fun loadingData() {
-        showLoadingDialog()
         if (!firstOpen) {
             context?.let {
                 mViewModel.getMyChannel(it, MY_CHANNEL_KEY, "头条")

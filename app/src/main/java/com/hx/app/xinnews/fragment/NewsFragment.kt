@@ -62,7 +62,6 @@ class NewsFragment : BaseFragment(), OnRefreshListener {
     }
 
     override fun loadingData() {
-        showLoadingDialog()
         arguments?.let {
             mChannel = it.getString(TAB_TITLE, "头条")
         }
