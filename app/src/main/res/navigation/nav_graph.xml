@@ -7,11 +7,18 @@
         android:name="com.hx.app.xinnews.fragment.MainFragment"
         android:label="MainFragment" >
         <action
-            android:id="@+id/action_mainFragment_to_channelManagerActivity"
-            app:destination="@id/channelManagerActivity" />
+            android:id="@+id/action_mainFragment_to_channelManageFragment"
+            app:destination="@id/channelManageFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_newsContentFragment"
+            app:destination="@id/newsContentFragment" />
     </fragment>
-    <activity
-        android:id="@+id/channelManagerActivity"
-        android:name="com.hx.app.xinnews.fragment.ChannelManagerActivity"
-        android:label="ChannelManagerActivity" />
+    <fragment
+        android:id="@+id/channelManageFragment"
+        android:name="com.hx.app.xinnews.fragment.ChannelManageFragment"
+        android:label="ChannelManageFragment" />
+    <fragment
+        android:id="@+id/newsContentFragment"
+        android:name="com.hx.app.xinnews.fragment.NewsContentFragment"
+        android:label="NewsContentFragment" />
 </navigation>

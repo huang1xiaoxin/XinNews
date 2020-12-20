@@ -3,7 +3,12 @@
 
 ### 截图
 ![图一](https://github.com/huang1xiaoxin/XinNews/blob/master/images/image.jpg)
+
 ![图二](https://github.com/huang1xiaoxin/XinNews/blob/master/images/image1.jpg)
+
+![图三](https://github.com/huang1xiaoxin/XinNews/blob/master/images/iamge3.jpg)
+
+![图四](https://github.com/huang1xiaoxin/XinNews/blob/master/images/iamge4.jpg)
 
 
 ### 感谢

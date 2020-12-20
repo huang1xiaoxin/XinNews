@@ -65,7 +65,7 @@ class MainViewModel : ViewModel() {
      */
     fun getMyChannel(context: Context,key:String,defValue:String){
         viewModelScope.launch(Dispatchers.IO) {
-            val myChannels by SharedPreferencesUtil(context,key,defValue)
+            val myChannels = SharedPreferencesUtil(context).findValue(key,defValue)
             val list = mutableListOf<String>()
             myChannels.split(" ").forEach {
                 if (it != "") {
@@ -81,7 +81,7 @@ class MainViewModel : ViewModel() {
      */
     fun getHotChannel(context: Context,key:String,defValue:String){
         viewModelScope.launch(Dispatchers.IO) {
-            val hotChannel by SharedPreferencesUtil(context,key,defValue)
+            val hotChannel = SharedPreferencesUtil(context).findValue(key,defValue)
             val list= mutableListOf<String>()
             hotChannel.split(" ").forEach{
                 if(it !=""){
@@ -90,7 +90,7 @@ class MainViewModel : ViewModel() {
             }
             mHotChannelLiveData.postValue(list)
         }
-
     }
+
 
 }

@@ -7,7 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="tabText">#66000000</color>
+    <color name="tabText">#000000</color>
+    <color name="NewsItemText">#000000</color>
     <color name="tabSelectedText">#4CA9F3</color>
     <color name="border_color">#67DBEB</color>
+    <color name="layer_text">#90000000</color>
+    <color name="line">#44000000</color>
 </resources>

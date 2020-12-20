@@ -1,6 +1,7 @@
 package com.hx.app.xinnews.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,6 @@ import com.hx.app.xinnews.base.BaseFragment
 import com.hx.app.xinnews.constant.CONTENT
 import com.hx.app.xinnews.constant.TITLE
 import com.hx.app.xinnews.databinding.NewsContextLayoutBinding
-import com.hx.app.xinnews.viewmodel.MainViewModel
 
 class NewsContentFragment : BaseFragment() {
 
@@ -20,19 +20,20 @@ class NewsContentFragment : BaseFragment() {
     //使用ApplicationContext防止内存泄露
     private lateinit var mWebView: WebView
 
-    /**
-     * 让子类去实现初始化一个View
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
-     */
+    companion object{
+        const val  TAG="NewsContentFragment"
+    }
 
-    override fun initView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+    override fun initView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState:
+    Bundle?):View {
         mBinding = NewsContextLayoutBinding.inflate(layoutInflater)
         context?.let {
-            mWebView = WebView(it.applicationContext)
+            WebView(it.applicationContext)
+        }.also {
+            it?.let{
+                mWebView=it
+            }
         }
         val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT)
@@ -49,12 +50,14 @@ class NewsContentFragment : BaseFragment() {
             //设置字体的大小
             textZoom = resources.getDimensionPixelOffset(R.dimen.content_title) * 4
         }
+
         mWebView.webViewClient = object : WebViewClient() {
             //数据加载完成
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
                 imgReset()
                 dismissLoadingDialog()
+                Log.e(TAG, "onPageFinished: 网页内容加载完成" )
             }
         }
         return mBinding.root
@@ -64,8 +67,9 @@ class NewsContentFragment : BaseFragment() {
         val content = arguments?.getString(CONTENT)
         val title = arguments?.getString(TITLE)
         //加载数据
-        content?.let {
+        content?.let{
             mWebView.loadDataWithBaseURL(null, content, "text/html", "utf-8", null)
+            Log.e(TAG, "loadingData: 加载Html数据$it")
             mBinding.title.text = title
         }
 
@@ -85,13 +89,13 @@ class NewsContentFragment : BaseFragment() {
      * ps:图片可能会存在压缩的问题
      */
     private fun imgReset() {
-        mWebView.loadUrl("javascript:(function(){" +
-                "var objs = document.getElementsByTagName('img'); " +
-                "for(var i=0;i<objs.length;i++)  " +
-                "{"
-                + "var img = objs[i];   " +
-                "    img.style.width = '100%'; img.style.height = 'auto';  " +
-                "}" +
-                "})()")
+        mWebView.loadUrl("""javascript:(function(){
+                var objs = document.getElementsByTagName('img'); 
+                for(var i=0;i<objs.length;i++)  
+                {
+                 var img = objs[i];   
+                 img.style.width = '100%'; img.style.height = 'auto';  
+                } 
+                })()""")
     }
 }

@@ -1,6 +1,8 @@
 package com.hx.app.xinnews.adapter
 
 import android.os.Bundle
+import android.util.Log
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -25,4 +27,6 @@ class FragmentAdapter(fm: FragmentManager, behavior: Int, private val strings: L
     override fun getPageTitle(position: Int): CharSequence {
         return strings[position]
     }
+
+
 }

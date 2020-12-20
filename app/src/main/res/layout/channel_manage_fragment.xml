@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="10dp"
-        android:background="@color/tabText"
+        android:background="@color/line"
         app:layout_constraintTop_toBottomOf="@id/title"
         tools:ignore="MissingConstraints" />
 
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="我的频道"
+        android:text="热门频道"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/my_channel_grid_view"

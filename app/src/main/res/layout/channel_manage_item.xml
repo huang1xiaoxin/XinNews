@@ -12,6 +12,7 @@
         android:text="头条"
         android:textAlignment="center"
         android:textSize="14sp"
+        android:textColor="@color/layer_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/layer"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +24,6 @@
         android:layout_height="wrap_content"
         app:referenced_ids="text"
         app:referenced_offset_x="1"
-        app:referenced_offset_y="1" />
+        app:referenced_offset_y="2" />
 
 </com.hx.app.xinnews.ui.constraint.CustomConstraintLayout>
