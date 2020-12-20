@@ -9,5 +9,8 @@ public class test {
         int i1 = 0;
         int y1 = 0;
         int x1 = 2;
+        int i2 = 0;
+        int y3 = 0;
+        int x14 = 2;
     }
 }
